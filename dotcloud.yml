@@ -3,4 +3,4 @@ www:
   approot: .
 
 data:
-  mongodb
+  type: mongodb
