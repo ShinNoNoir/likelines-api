@@ -16,5 +16,14 @@ class Heatmap:
 class Echo:
     def GET(self, **kwargs):
         res = dict(kwargs)
-        res['web.env'] = web.env
+        
+        try:
+            from pymongo import Connection
+            conn = Connection(res['web.env']['DOTCLOUD_DATA_MONGODB_URL'])
+            db = conn.test_db
+            res['db.foos'] = db.foos.find()
+        except:
+            import traceback
+            res['exc'] = traceback.format_exc()
+        
         return res
