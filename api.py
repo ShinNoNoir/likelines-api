@@ -1,19 +1,53 @@
 import web
-import json
+import time
 
 def Connection():
     import pymongo
     return pymongo.Connection(web.DOTCLOUD_DATA_MONGODB_URL)
+
+
+def UserId():
+    import uuid
+    str(uuid.uuid4())
     
+    user_id = web.cookies(user_id=None).user_id
+    if user_id is None:
+        user_id = str(uuid.uuid4())
+        web.setcookie('user_id', user_id,  31556926)
     
+    return user_id
+
+
 class Heatmap:
     """
-    /heatmap?video=<video_id>&[getkey=1|0]
+    /heatmap?video=<url>&[getkey=1|0]
+    
+    Returns:
+    {
+      "heatmap": <heatmap>,
+      "interaction_key": <interaction_key>  
+    }
     """
     def GET(self, video, getkey=False):
+        # TODO: URL normalizer? 
+        
+        conn = Connection()
+        likes_db = conn.likes
+        played_fragments = conn.played_fragments
+        
+        # TODO: "schema"?
+        # TODO: users?
+        
+        for like in likes_db.find({'video': video}):
+            pass
+        
+        
+        
         res = {}
         res['heatmap'] = []
         if getkey:
+            interaction_keys_db = conn.interaction_keys
+            
             res['key'] = getkey 
         return res
 
@@ -28,6 +62,8 @@ class Echo:
             for foo in db.foos.find():
                 del foo['_id']
                 foos.append(foo)
+            
+            res['user_id'] = UserId()
         
         except:
             import traceback
