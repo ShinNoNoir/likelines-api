@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import web
+import os
 import json
 
 from api import Heatmap, Echo
@@ -38,6 +39,18 @@ class FrontController:
         
     def badrequest(self, message):
         return web.HTTPError('400 Bad Request', {'Content-Type': 'text/plain'}, message)
+
+
+
+#
+
+try:
+    with open(os.path.expanduser('~/environment.json')) as f:
+        env = json.load(f)
+        web.env = env
+except:
+    web.env = None
+
 
 urls = (
   '/(.*)', 'FrontController'
