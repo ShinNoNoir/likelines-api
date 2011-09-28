@@ -19,7 +19,7 @@ class Echo:
         
         try:
             from pymongo import Connection
-            conn = Connection(res['web.env']['DOTCLOUD_DATA_MONGODB_URL'])
+            conn = Connection(web.env['DOTCLOUD_DATA_MONGODB_URL'])
             db = conn.test_db
             res['db.foos'] = db.foos.find()
         except:
