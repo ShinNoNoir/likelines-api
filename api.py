@@ -1,7 +1,11 @@
 import web
 import json
 
-
+def Connection():
+    import pymongo
+    return pymongo.Connection(web.DOTCLOUD_DATA_MONGODB_URL)
+    
+    
 class Heatmap:
     """
     /heatmap?video=<video_id>&[getkey=1|0]
@@ -10,7 +14,7 @@ class Heatmap:
         res = {}
         res['heatmap'] = []
         if getkey:
-            res['key'] = None
+            res['key'] = getkey 
         return res
 
 class Echo:
@@ -18,10 +22,13 @@ class Echo:
         res = dict(kwargs)
         
         try:
-            from pymongo import Connection
-            conn = Connection(web.env['DOTCLOUD_DATA_MONGODB_URL'])
+            conn = Connection()
             db = conn.test_db
-            res['db.foos'] = db.foos.find()
+            res['db.foos'] = foos = []
+            for foo in db.foos.find():
+                del foo['_id']
+                foos.append(foo)
+        
         except:
             import traceback
             res['exc'] = traceback.format_exc()
