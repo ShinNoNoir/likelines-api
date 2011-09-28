@@ -17,4 +17,4 @@ class Echo:
     def GET(self, **kwargs):
         res = dict(kwargs)
         res['web.env'] = web.env
-        return kwargs
+        return res
