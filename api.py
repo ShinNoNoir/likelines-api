@@ -1,3 +1,6 @@
+# Written by Raynor Vliegendhart
+# see LICENSE for license information
+
 import web
 import time
 
@@ -36,19 +39,22 @@ class Heatmap:
         played_fragments = conn.played_fragments
         
         # TODO: "schema"?
-        # TODO: users?
         
+        heatmap = []
         for like in likes_db.find({'video': video}):
-            pass
+            pass # TODO: Aggregate
         
+        for fragments in played_fragments.find():
+            pass # TODO: Aggregate 
         
         
         res = {}
-        res['heatmap'] = []
+        res['heatmap'] = heatmap
         if getkey:
             interaction_keys_db = conn.interaction_keys
-            
-            res['key'] = getkey 
+            # For now, don't require a key:
+            res['key'] = 'NoKeyNeeded'
+        
         return res
 
 class Echo:

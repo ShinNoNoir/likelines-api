@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Written by Raynor Vliegendhart
+# see LICENSE for license information
+
 import web
 import os
 import json
